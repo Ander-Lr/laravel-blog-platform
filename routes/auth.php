@@ -6,45 +6,45 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
 
-// Mostrar formulario de login
+// Show login form
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])
     ->middleware('guest')
     ->name('login');
 
-// Procesar login
+// Process login
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])
     ->middleware('guest');
 
-// Cerrar sesión
+// Log out
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
 
-// Mostrar formulario de registro
+// Show registration form
 Route::get('/register', [RegisteredUserController::class, 'create'])
     ->middleware('guest')
     ->name('register');
 
-// Guardar usuario desde registro
+// Save user from registration
 Route::post('/register', [RegisteredUserController::class, 'store'])
     ->middleware('guest');
 
-// Mostrar formulario "Forgot Password"
+// Show "Forgot Password" form
 Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])
     ->middleware('guest')
     ->name('password.request');
 
-// Enviar email de restablecimiento
+// Send reset email
 Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
     ->middleware('guest')
     ->name('password.email');
 
-// Formulario de cambiar contraseña
+// Password change form
 Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
     ->middleware('guest')
     ->name('password.reset');
 
-// Guardar nueva contraseña
+// Save new password
 Route::post('/reset-password', [NewPasswordController::class, 'store'])
     ->middleware('guest')
     ->name('password.update');

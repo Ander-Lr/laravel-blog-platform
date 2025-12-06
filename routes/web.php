@@ -28,20 +28,3 @@ Route::middleware(['role:admin'])->group(function () {
 });
 //Authentication routes
 require __DIR__.'/auth.php';
-
-
-
-
-/*
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-*/

@@ -14,9 +14,44 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
     <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
 </head>
 <body>
+    <header class="container">
+        <nav>
+            <ul><li><a href="{{ route('home') }}">Inicio</a></li></ul>
+            <ul>
+                @auth
+                    @if(auth()->user()->isAdmin())
+                        <li><a href="{{ route('admin.users.index') }}">Usuarios</a></li>
+                    @endif
+
+                    @if(auth()->user()->isEditor() || auth()->user()->isAdmin())
+                        <li><a href="{{ route('posts.create') }}">Nuevo Post</a></li>
+                    @endif
+
+                    <li>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button>Salir</button>
+                        </form>
+                    </li>
+                @else
+                    <li><a href="{{ route('login') }}">Ingresar</a></li>
+                    <li><a href="{{ route('register') }}">Registrarse</a></li>
+                @endauth
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        @yield('content')
+    </div>
+
+
+
+
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
