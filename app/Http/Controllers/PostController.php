@@ -9,15 +9,20 @@ class PostController extends Controller{
     /**
      * Display a listing of the resource.
      */
-    public function index(){
+    public function home(){
         $posts = Post::latest()->paginate(10);
         return view('posts.index', compact('posts'));
+    }
+
+    public function index(){
+        $posts = Post::latest()->paginate(10);
+        return view('index', compact('posts'));
     }
     /**
      * Show the form for creating a new resource.
      */
     public function create(){
-        
+        return view('posts.create');
     }
 
     /**
@@ -27,7 +32,12 @@ class PostController extends Controller{
         $data = $request->validate([
             'title' => 'required',
             'content' => 'required',
+            'image' => 'nullable    '
         ]);
+        
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('posts', 'public');
+        }
 
         $data['user_id'] = auth()->id();
         Post::create($data);
@@ -47,10 +57,11 @@ class PostController extends Controller{
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Post $post)
     {
-        //
+        return view('posts.edit', compact('post'));
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -63,8 +74,15 @@ class PostController extends Controller{
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
+    public function destroy(Post $post){
+        // Delete all comments associated with this post
+        $post->comments()->delete();
+        // Delete the post itself
+        $post->delete();
+        // Redirect back to the posts list with a success message
+        return redirect()->route('posts.index')
+            ->with('success', 'Post and related comments successfully deleted.');
     }
+
+
 }

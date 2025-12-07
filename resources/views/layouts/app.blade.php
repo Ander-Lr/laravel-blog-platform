@@ -8,47 +8,29 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-
+    @vite(['resources/css/app.css', 'resources/css/customblog.css', 'resources/js/app.js'])
 </head>
 <body>
-    <header class="container">
-        <nav>
-            <ul><li><a href="{{ route('home') }}">Inicio</a></li></ul>
-            <ul>
-                @auth
-                    @if(auth()->user()->isAdmin())
-                        <li><a href="{{ route('admin.users.index') }}">Usuarios</a></li>
-                    @endif
+    <div id="app" class="container-blog">
+        <header class="header-blog">
+            <nav>
+                <div>
+                    <a href="{{ url('/') }}">Laravel Blog</a>
+                </div>
+                <div>
+                    @guest
+                        <a class="btn" href="{{ route('login') }}">Iniciar Sesión</a>
+                        <a class="btn" href="{{ route('register') }}">Registrarse</a>
+                    @else
+                        <span>{{ Auth::user()->name }} <i class="fa-regular fa-user"></i></span>
+                        <a class="btn" href="{{ url('/home') }}" role="button">Panel</a>
+                    @endguest
+                </div>
+        </header>
 
-                    @if(auth()->user()->isEditor() || auth()->user()->isAdmin())
-                        <li><a href="{{ route('posts.create') }}">Nuevo Post</a></li>
-                    @endif
-
-                    <li>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button>Salir</button>
-                        </form>
-                    </li>
-                @else
-                    <li><a href="{{ route('login') }}">Ingresar</a></li>
-                    <li><a href="{{ route('register') }}">Registrarse</a></li>
-                @endauth
-            </ul>
-        </nav>
-    </header>
-
-    <div class="container">
-        @yield('content')
+        <main class="py-4">
+            @yield('content')
+        </main>
     </div>
-
-
 </body>
 </html>

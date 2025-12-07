@@ -6,8 +6,22 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Admin\UserController;
 
+
+Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+
+// home
+Route::get('/home', function () {
+    return view('home');
+})->middleware(['auth'])->name('home.dashboard');    
+
 // blog main page
+Route::get('/posts', [PostController::class, 'home'])->name('posts.index');
 Route::get('/', [PostController::class, 'index'])->name('home');
+
+
+
 // detail of a post
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 // Public comments

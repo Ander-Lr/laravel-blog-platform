@@ -1,8 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.layout')
+@push('styles')
+    @vite(['resources/css/layoutcss.css'])
+@endpush
 
 @section('content')
 <main class="container">
-
+    <div class="set-before"><a class="btn" href="{{ route('posts.index') }}" role="button">Regresar</a></div>
     <h1>Editar Post</h1>
 
     {{-- Mostrar errores de validación --}}

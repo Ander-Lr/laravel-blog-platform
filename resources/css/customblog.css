@@ -1,0 +1,53 @@
+/* Styles for login*/ 
+
+.vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.container-blog {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+        "headerb"
+        "content"
+        "footerb"
+    ;
+    min-height: 100vh;
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.header-blog {
+    grid-area: headerb;
+    padding: 20px 0;
+}
+
+.content-blog {
+    grid-area: content;
+    padding: 20px 0;
+}
+
+.footer-blog {
+    grid-area: footerb;
+    padding: 20px 0;
+    text-align: center;
+}
+
+/* Responsive grid for posts */
+.content-blog .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.container-blog nav {
+    display: flex;
+    justify-content: space-between;
+}
+
+
