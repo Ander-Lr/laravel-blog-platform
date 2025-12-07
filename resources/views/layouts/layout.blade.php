@@ -45,10 +45,10 @@
 
             @auth
                 @if(Auth::user()->role === 'admin' || Auth::user()->role === 'editor')
-                    
-                    <div><a href="">Usuarios</a></div>
+                    @if(Auth::check() && Auth::user()->role === 'admin')
+                        <div><a href="{{ route('admin.users.index') }}">Usuarios</a></div>
+                    @endif                    
                     <div><a href="#">Comentarios</a></div>
-
                 @endif
             @endauth
 
