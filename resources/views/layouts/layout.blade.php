@@ -10,7 +10,10 @@
 
     <!-- estilos adicionales -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-    
+    <link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 
@@ -48,7 +51,7 @@
                     @if(Auth::check() && Auth::user()->role === 'admin')
                         <div><a href="{{ route('admin.users.index') }}">Usuarios</a></div>
                     @endif                    
-                    <div><a href="#">Comentarios</a></div>
+                    <div><a href="{{ route('admin.comments.index') }}">Comentarios</a></div>
                 @endif
             @endauth
 

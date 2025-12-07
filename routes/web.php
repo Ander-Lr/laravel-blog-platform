@@ -31,29 +31,59 @@ Route::middleware(['role:editor,admin'])->group(function () {
     // CRUD post
     Route::resource('posts', PostController::class)->except(['index', 'show']);
 });
-// Protected routes, login required, only admin
-Route::middleware(['role:admin'])->group(function () {
-    // view user list
-    Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index');
-    // Edit user role 
-    Route::get('/admin/users/{user}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
-    // Update role
-    Route::put('/admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
+// Protected routes, only admin
+Route::middleware(['role:admin'])->prefix('admin')->group(function () {
+
+    // List users
+    Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
+
+    // Create user form
+    Route::get('/users/create', [UserController::class, 'create'])->name('admin.users.create');
+
+    // Store new user
+    Route::post('/users', [UserController::class, 'store'])->name('admin.users.store');
+
+    // Show user detail
+    Route::get('/users/{user}', [UserController::class, 'show'])->name('admin.users.show');
+
+    // Edit form
+    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
+
+    // Update user
+    Route::put('/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
+
+    // Delete user
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 });
 
-Route::middleware(['role:admin'])->group(function () {
 
-    Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users.index');
-    Route::get('/admin/users/create', [UserController::class, 'create'])->name('admin.users.create');
-    Route::post('/admin/users', [UserController::class, 'store'])->name('admin.users.store');
+// Protected routes, only admin/editor can manage comments
+Route::middleware(['role:editor,admin'])
+    ->prefix('admin')
+    ->group(function () {
 
-    Route::get('/admin/users/{user}', [UserController::class, 'show'])->name('admin.users.show');
+    // List all comments
+    Route::get('/comments', [CommentController::class, 'index'])
+        ->name('admin.comments.index');
 
-    Route::get('/admin/users/{user}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
-    Route::put('/admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
+    // Show comment detail
+    Route::get('/comments/{comment}', [CommentController::class, 'show'])
+        ->name('admin.comments.show');
 
-    Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+    // Edit comment form
+    Route::get('/comments/{comment}/edit', [CommentController::class, 'edit'])
+        ->name('admin.comments.edit');
+
+    // Update comment
+    Route::put('/comments/{comment}', [CommentController::class, 'update'])
+        ->name('admin.comments.update');
+
+    // Delete comment
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])
+        ->name('admin.comments.destroy');
 });
+
+
 
 //Authentication routes
 require __DIR__.'/auth.php';

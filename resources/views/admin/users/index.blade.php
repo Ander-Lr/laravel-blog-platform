@@ -25,6 +25,9 @@
         </article>
     @endif
 
+<div class="table-container" 
+     style="overflow-y: auto; max-height: 500px; padding: 5px;">
+
     <table>
         <thead>
             <tr>
@@ -46,28 +49,43 @@
 
                     <td style="text-align:right; display:flex; gap:10px; justify-content:flex-end;">
 
+                        {{-- Ver --}}
                         <a href="{{ route('admin.users.show', $user->id) }}" role="button">
                             Ver
                         </a>
 
-                        <a href="{{ route('admin.users.edit', $user->id) }}" role="button" class="secondary">
-                            Editar
-                        </a>
+                        {{-- Si NO es admin --}}
+                        @if($user->role !== 'admin')
 
-                        <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
-                              onsubmit="return confirm('¿Seguro que deseas eliminar este usuario? Esta acción no se puede deshacer.');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="outline danger">
-                                Eliminar
-                            </button>
-                        </form>
+                            {{-- Editar --}}
+                            <a href="{{ route('admin.users.edit', $user->id) }}" role="button" class="secondary">
+                                Editar
+                            </a>
+
+                            {{-- Eliminar --}}
+                            <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST"
+                                  onsubmit="return confirm('¿Seguro que deseas eliminar este usuario? Esta acción no se puede deshacer.');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="outline danger">
+                                    Eliminar
+                                </button>
+                            </form>
+
+                        @else
+                            <span style="color: gray; font-size: 0.9em;">
+                                (No editable)
+                            </span>
+                        @endif
 
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
+
+</div>
+
 
 </div>
 @endsection

@@ -7,109 +7,94 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    <!-- PicoCSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+
+    <!-- Tus estilos -->
     @vite(['resources/css/app.css', 'resources/css/customblog.css', 'resources/js/app.js'])
 </head>
 
 <body>
     <div class="container-blog">
+
+        <!-- HEADER -->
         <header class="header-blog">
-            <nav>
-                <div>
-                    <a href="{{ url('/') }}">Laravel Blog</a>
+            <nav class="nav-blog">
+                <div class="brand">
+                    <a href="{{ url('/') }}" class="brand-title">Laravel Blog</a>
                 </div>
-                <div>
+
+                <div class="user-actions">
                     @guest
                         <a class="btn" href="{{ route('login') }}">Iniciar Sesión</a>
                         <a class="btn" href="{{ route('register') }}">Registrarse</a>
                     @else
-                        <span>{{ Auth::user()->name }} <i class="fa-regular fa-user"></i></span>
+                        <span class="user-name">
+                            {{ Auth::user()->name }}
+                        </span>
 
-                        {{-- Mostrar Panel solo a admin o editor --}}
                         @if(Auth::user()->role === 'admin' || Auth::user()->role === 'editor')
-                            <a class="btn" href="{{ url('/home') }}" role="button">Panel</a>
+                            <a class="btn" href="{{ url('/home') }}">Panel</a>
                         @endif
 
-                        {{-- Botón para cerrar sesión --}}
-                        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                        <form action="{{ route('logout') }}" method="POST" class="logout-form">
                             @csrf
-                            <button class="btn btn-danger" type="submit">
+                            <button class="btn btn-danger">
                                 Cerrar Sesión
                             </button>
                         </form>
                     @endguest
-
                 </div>
+            </nav>
         </header>
 
-<main class="content-blog">
+        <!-- MAIN CONTENT -->
+        <main class="content-blog">
 
-    <div class="grid">
-        @forelse ($posts as $post)
-            <article>
-                <header>
-                    @if($post->image)
-                        <img src="{{ $post->image }}" alt="{{ $post->title }}"
-                             style="width: 100%; height: 200px; object-fit: cover;">
-                    @endif
-                    <h3>{{ $post->title }}</h3>
-                </header>
+            <div class="post-grid">
+                @forelse ($posts as $post)
+                    <article class="post-card">
 
-                <p>{{ Str::limit($post->content, 30) }}</p>
+                        <header>
 
-                <footer>
-                    <small>
-                        Por {{ $post->user->name ?? 'Desconocido' }} el 
-                        {{ $post->created_at ? $post->created_at->format('d M, Y') : 'Fecha desconocida' }}
-                    </small>
-
-                    {{-- BOTONES DE ACCIÓN --}}
-                    <div style="margin-top: 10px; display:flex; gap:10px;">
-
-                        {{-- Ver --}}
-                        <a href="{{ route('posts.show', $post) }}">
-                            Ver
-                        </a>
-
-                        @auth
-                            @if(Auth::user()->role === 'admin' || Auth::user()->role === 'editor')
-                                
-                                {{-- Edit --}}
-                                <a href="{{ route('posts.edit', $post) }}">
-                                    Editar
-                                </a>
-
-                                {{-- Delete --}}
-                                <form action="{{ route('posts.destroy', $post) }}" method="POST"
-                                    onsubmit="return confirm('¿Seguro que deseas eliminar este post?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit">
-                                        Eliminar
-                                    </button>
-                                </form>
+                            @if($post->image)
+                                <img src="{{ $post->image }}" 
+                                     alt="{{ $post->title }}" 
+                                     class="post-image">
                             @endif
-                        @endauth
 
-                    </div>
+                            <h3 class="post-title">{{ $post->title }}</h3>
+                        </header>
 
-                </footer>
-            </article>
-        @empty
-            <article>
-                <p>No se encontraron publicaciones.</p>
-            </article>
-        @endforelse
-    </div>
+                        <p class="post-excerpt">
+                            {{ Str::limit($post->content, 120) }}
+                        </p>
 
-</main>
+                        <footer class="post-footer">
+                            <small class="post-meta">
+                                Por {{ $post->user->name ?? 'Desconocido' }} ·
+                                {{ $post->created_at?->format('d M, Y') ?? 'Fecha desconocida' }}
+                            </small>
 
+                        </footer>
 
+                    </article>
+                @empty
+                    <article>
+                        <p>No se encontraron publicaciones.</p>
+                    </article>
+                @endforelse
+            </div>
+
+        </main>
+
+        <!-- FOOTER -->
         <footer class="footer-blog">
             <div class="container">
-                <small>&copy; {{ date('Y') }} {{ config('app.name', 'Laravel') }}. Todos los derechos
-                    reservados.</small>
+                <small>&copy; {{ date('Y') }} {{ config('app.name') }} — Todos los derechos reservados.</small>
             </div>
         </footer>
+
     </div>
 </body>
 
