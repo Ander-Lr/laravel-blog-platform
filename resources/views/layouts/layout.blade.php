@@ -40,10 +40,20 @@
         </div>
 
         <div class="menu-blog">
-            <div><a href="">Usuarios</a></div>
+
             <div><a href="{{ route('posts.index') }}">Publicaciones</a></div>
-            <div><a href="#">Comentarios</a></div>
+
+            @auth
+                @if(Auth::user()->role === 'admin' || Auth::user()->role === 'editor')
+                    
+                    <div><a href="">Usuarios</a></div>
+                    <div><a href="#">Comentarios</a></div>
+
+                @endif
+            @endauth
+
         </div>
+
 
         <div class="content-blog">
             <!-- Contenido dinamico -->

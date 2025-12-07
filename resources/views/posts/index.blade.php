@@ -11,8 +11,11 @@
             </div>
             <div style="text-align: right;">
                 @auth
-                    <a href="{{ route('posts.create') }}" role="button">Crear Nueva Publicación</a>
+                    @if(Auth::user()->role === 'admin' || Auth::user()->role === 'editor')
+                        <a href="{{ route('posts.create') }}" role="button">Crear Nueva Publicación</a>
+                    @endif
                 @endauth
+
             </div>
         </div>
 
@@ -38,16 +41,26 @@
                             {{ $post->created_at ? $post->created_at->format('d M, Y') : 'Fecha desconocida' }}</small>
                         <br>
                         <div style="text-align: right;">
+
+                            <a href="{{ route('posts.show', $post->id) }}" role="button" class="btn">Ver</a>
+
                             @auth
-                                <a href="{{ route('posts.show', $post->id) }}" role="button" class="btn">Ver</a>
-                                <a href="{{ route('posts.edit', $post->id) }}" role="button" class="contrast">Editar</a>
-                                <form action="{{ route('posts.destroy', $post->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="outline danger">Eliminar</button>
-                                </form>
+
+                                @if(Auth::user()->role === 'admin' || Auth::user()->role === 'editor')
+
+                                    <a href="{{ route('posts.edit', $post->id) }}" role="button" class="contrast">Editar</a>
+
+                                    <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="outline danger">Eliminar</button>
+                                    </form>
+
+                                @endif
                             @endauth
+
                         </div>
+
                     </footer>
                 </article>
 

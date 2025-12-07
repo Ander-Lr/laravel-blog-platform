@@ -62,13 +62,24 @@ class PostController extends Controller{
         return view('posts.edit', compact('post'));
     }
 
-
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Post $post)
     {
-        //
+        // Validate incoming form data
+        $data = $request->validate([
+            'title'   => 'required|string|max:255',
+            'content' => 'required|string',
+            'image'   => 'nullable|string|max:255'
+        ]);
+
+        // Update post fields
+        $post->update($data);
+
+        // Redirect back to posts list with success message
+        return redirect()->route('posts.index')
+            ->with('success', 'Post updated successfully.');
     }
 
     /**

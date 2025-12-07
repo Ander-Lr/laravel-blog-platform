@@ -23,8 +23,21 @@
                         <a class="btn" href="{{ route('register') }}">Registrarse</a>
                     @else
                         <span>{{ Auth::user()->name }} <i class="fa-regular fa-user"></i></span>
-                        <a class="btn" href="{{ url('/home') }}" role="button">Panel</a>
+
+                        {{-- Mostrar Panel solo a admin o editor --}}
+                        @if(Auth::user()->role === 'admin' || Auth::user()->role === 'editor')
+                            <a class="btn" href="{{ url('/home') }}" role="button">Panel</a>
+                        @endif
+
+                        {{-- Botón para cerrar sesión --}}
+                        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button class="btn btn-danger" type="submit">
+                                Cerrar Sesión
+                            </button>
+                        </form>
                     @endguest
+
                 </div>
         </header>
 
@@ -57,23 +70,26 @@
                             Ver
                         </a>
 
-                        {{-- Solo permitir editar/eliminar si el usuario está logueado --}}
                         @auth
-                            {{-- Editar --}}
-                            <a href="{{ route('posts.edit', $post) }}">
-                                Editar
-                            </a>
+                            @if(Auth::user()->role === 'admin' || Auth::user()->role === 'editor')
+                                
+                                {{-- Edit --}}
+                                <a href="{{ route('posts.edit', $post) }}">
+                                    Editar
+                                </a>
 
-                            {{-- Eliminar --}}
-                            <form action="{{ route('posts.destroy', $post) }}" method="POST"
-                                  onsubmit="return confirm('¿Seguro que deseas eliminar este post?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit">
-                                    Eliminar
-                                </button>
-                            </form>
+                                {{-- Delete --}}
+                                <form action="{{ route('posts.destroy', $post) }}" method="POST"
+                                    onsubmit="return confirm('¿Seguro que deseas eliminar este post?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit">
+                                        Eliminar
+                                    </button>
+                                </form>
+                            @endif
                         @endauth
+
                     </div>
 
                 </footer>
