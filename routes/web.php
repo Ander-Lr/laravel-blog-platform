@@ -20,8 +20,6 @@ Route::get('/home', function () {
 Route::get('/posts', [PostController::class, 'home'])->name('posts.index');
 Route::get('/', [PostController::class, 'index'])->name('home');
 
-
-
 // detail of a post
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 // Public comments

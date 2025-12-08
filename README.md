@@ -57,3 +57,37 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+## How to Run the Project
+
+Follow these steps to run the Laravel application locally:
+
+1. Start Docker containers (inside the `docker` directory):
+
+```bash
+docker compose up -d
+Start the Laravel local development server:
+```
+```bash
+php artisan serve
+Install frontend dependencies:
+```
+
+```bash
+npm install
+Install PicoCSS (optional):
+```
+
+```bash
+npm install picocss
+Compile and run frontend build:
+```
+```bash
+npm run dev
+Run database migrations:
+```
+
+```bash
+php artisan migrate
+```
