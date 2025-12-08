@@ -67,8 +67,8 @@ Follow these steps to run the Laravel application locally:
 
 ```bash
 docker compose up -d
-Start the Laravel local development server:
 ```
+Start the Laravel local development server:
 ```bash
 php artisan serve
 Install frontend dependencies:
@@ -76,17 +76,17 @@ Install frontend dependencies:
 
 ```bash
 npm install
-Install PicoCSS (optional):
 ```
+Install PicoCSS (optional):
 
 ```bash
 npm install picocss
-Compile and run frontend build:
 ```
+Compile and run frontend build:
 ```bash
 npm run dev
-Run database migrations:
 ```
+Run database migrations:
 
 ```bash
 php artisan migrate
